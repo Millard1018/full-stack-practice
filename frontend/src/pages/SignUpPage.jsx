@@ -1,5 +1,5 @@
 import { useState, useReducer } from "react";
-import SignUp from "./SignUpComponent";
+import SignUp from "../components/SignUpComponent";
 
 function SignUpPage() {
 
