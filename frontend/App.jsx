@@ -14,8 +14,7 @@ function App() {
   return (
     <>
       <div>
-        {!dashboard && <LogIn dashboard={setDashboard}/>}
-        {dashboard && <RoleChangePage/>}
+        <DeleteUserPage/>
       </div>
     </>
   )

@@ -9,7 +9,7 @@ router.post("/signups", createUser);
 router.post("/login", postLog);
 router.post("/auth/refresh", refreshToken);
 router.get("/users", pagination);
-router.get("/signups", getUser);
+router.get("/get-users", getUser);
 router.get("/login", authenticateToken, authorization('user', 'admin', 'superadmin'), getLog);
 router.get("/role", authenticateToken, authorization('user', 'admin', 'superadmin'), getRole);
 router.post("/change-role", changeRole);

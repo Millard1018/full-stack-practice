@@ -1,9 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function DeleteUserPage() {
     const [userID, setUserID] = useState('');
+    const [users, setUsers] = useState([]);
     const [success, setSuccess] = useState('');
-    const [error, setError] = useState('')
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        async function getUsername() {
+            try {
+                const res = await fetch('http://localhost:1018/api/users/get-users');
+                if(res.ok) {
+                    const data = await res.json();
+                    setUsers(data);
+                }else {
+                    const data = await res.json();
+                    throw new Error(data.error)
+                }
+            } catch(err) {
+                setError(err.message);
+                setTimeout(() => {setError('')}, 3000)
+            }
+        }
+        getUsername();
+    }, [])
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -33,9 +53,12 @@ export default function DeleteUserPage() {
             <h1 className="font-bold text-3xl mb-[10vh]">User Archive Page</h1>
             <form onSubmit={handleSubmit} className="space-y-5 flex flex-col" >
                 <div className="space-x-4">
-                    <label htmlFor="" className="font-bold" >Enter User ID:</label>
-                    <input type="text" value={userID} onChange={(e) => setUserID(e.target.value)}
-                    placeholder="ID" className="rounded-2xl border border-gray-400 px-[2vw] py-[0.5vh]" />
+                    <label htmlFor="" className="font-bold" >Select User ID:</label>
+                    <select onChange={(e) => setUserID(e.target.value)}>
+                        {users?.map(user => (
+                            <option value={user._id} key={user._id}>{user.username}</option>
+                        ))}
+                    </select>
                 </div>
                 <button type='submit' className="rounded-3xl bg-slate-950 text-white px-5 py-1 mx-auto hover:opacity-60 active:opacity-100">Submit</button>
             </form>

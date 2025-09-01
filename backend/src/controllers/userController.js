@@ -84,24 +84,7 @@ const pagination = async (req, res) => {
 
 const getUser = async (req, res) => {
   try {
-    const {name, username, email, limit, sortBy} = req.query;
-     // Build dynamic filter
-    const filter = {};
-    if (name) filter.name = name;
-    if (username) filter.username = username;
-    if (email) filter.email = email;
-
-    // Build query
-    const query = User.find(filter);
-
-    // Limit results if specified
-    if (limit) query.limit(Number(limit));
-
-    // Sort results if specified
-    if (sortBy) query.sort({ [sortBy]: 1 }); // ascending, use -1 for descending
-
-    const users = await query.exec();
-
+    const users = await User.find().select('username')
     res.json(users);
   } catch (err) {
     res.status(500).json({ error: 'Server error' });
